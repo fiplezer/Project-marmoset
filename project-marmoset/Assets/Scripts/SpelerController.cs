@@ -3,13 +3,18 @@ using UnityEngine.InputSystem;
 
 public class Speler_Controller : MonoBehaviour
 {
+    //toggles turn on/off certain features
+    [Header("Toggles")]
+    public bool MovementToggle = true;
+    public bool FreeMovementToggle = true;
+    public bool JumpToggle = true;
     [Header("Move")]
     [SerializeField] private float moveSpeed = 5.5f;
     [Header("Jump")]
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float coyoteTime = 0.1f; //allows jumping when airborne
     [SerializeField] private float jumpBufferTime = 0.1f; //allows jumping when landing
-    [SerializeField] private float jumpCutMultiplier = 1f; //allows variable height
+    //[SerializeField] private float jumpCutMultiplier = 1f; //allows variable height
     [Header("GroundCheck")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
@@ -19,6 +24,7 @@ public class Speler_Controller : MonoBehaviour
     [Header("Components")]
     private Rigidbody2D rb;
     private InputAction moveInput;
+    private InputAction freeMoveInput;
     private Vector2 moveVector;
     private InputAction jumpInput;
     private bool isGrounded;
@@ -30,6 +36,7 @@ public class Speler_Controller : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         moveInput = InputSystem.actions.FindAction("Move");
+        freeMoveInput = InputSystem.actions.FindAction("FreeMove");
         jumpInput = InputSystem.actions.FindAction("Jump");
         //jump input, FindAction("Jump");
 
@@ -37,36 +44,28 @@ public class Speler_Controller : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void OnJump()
+    private void JumpCheck()
     {
-        if (jumpInput.ReadValue<float>() == 1f)
+        if (jumpInput.WasPressedThisFrame())
         {
             jumpBufferCounter = jumpBufferTime;
         }
-        jumpHeld = true;
-        if (jumpInput.ReadValue<float>() == 0f)
-        {
-            jumpHeld = false;
-        }
     }
 
-    void Update()
+    private void Jump()
     {
-        OnJump();
+        JumpCheck();
         //check if player is grounded
         isGrounded = Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundLayer);
         if (isGrounded)
         {
             coyoteCounter = coyoteTime;
-        }    
+        }
         else
         {
             coyoteCounter -= Time.deltaTime;
         }
         jumpBufferCounter -= Time.deltaTime;
-
-        //Debug.Log(coyoteCounter);
-        //Debug.Log(jumpBufferCounter);
 
         //jump if buffered input & in coyoteTime
         if (jumpBufferCounter > 0f && coyoteCounter > 0f)
@@ -75,19 +74,40 @@ public class Speler_Controller : MonoBehaviour
             jumpBufferCounter = 0f;
             coyoteCounter = 0f;
         }
+    }
 
-        //Variable jump height
-        if (!jumpHeld && rb.linearVelocity.y > 0f)
+    void Update()
+    {
+        if (JumpToggle)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            Jump();
         }
 
-        moveVector = moveInput.ReadValue<Vector2>();
+        if (MovementToggle && !FreeMovementToggle)
+        {
+            rb.gravityScale = 2f;
+            moveVector = moveInput.ReadValue<Vector2>();
+        }
+        else
+        {
+            rb.gravityScale = 0f;
+            moveVector = freeMoveInput.ReadValue<Vector2>();
+        }
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveVector.x * moveSpeed, rb.linearVelocity.y);
+        if (MovementToggle)
+        {
+            if (!FreeMovementToggle)
+            {
+                rb.linearVelocity = new Vector2(moveVector.x * moveSpeed, rb.linearVelocity.y);
+            }
+            else
+            {
+                rb.linearVelocity = new Vector2(moveVector.x * moveSpeed, moveVector.y * moveSpeed);
+            }
+        }
     }
 
 }
