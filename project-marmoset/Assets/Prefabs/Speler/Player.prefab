@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4485092956690971735}
   - component: {fileID: 2068088497917830135}
   - component: {fileID: 6198893205550031701}
-  - component: {fileID: 8884828430941236711}
+  - component: {fileID: 1575889725377648345}
+  - component: {fileID: -1208857292281738800}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -169,7 +170,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &8884828430941236711
+--- !u!114 &1575889725377648345
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,17 +181,55 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e41227fb9e63f954abb8ce76cbee5c42, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player_Controller
+  m_EditorClassIdentifier: Assembly-CSharp::SpelerController
+  MovementToggle: 1
+  FreeMovementToggle: 0
+  JumpToggle: 1
+  CrouchToggle: 1
+  InteractToggle: 0
   moveSpeed: 5.5
   jumpForce: 10
   coyoteTime: 0.1
   jumpBufferTime: 0.1
-  jumpCutMultiplier: 1
   groundCheck: {fileID: 8842643443132833784}
   groundCheckSize: {x: 0.5, y: 0.1}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 64
+  interactRange: 1
+  interactionMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &-1208857292281738800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532430723636456483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 14174e90a01487a45b578df9296632f6, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: GamePad
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &3875577435850826243
 GameObject:
   m_ObjectHideFlags: 0
