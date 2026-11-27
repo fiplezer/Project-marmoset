@@ -10,6 +10,7 @@ public class FruitEnNotenInLaden : MonoBehaviour
     private int rareChance = 10;
     private int chance;
     private bool timerSpawn = false;
+    private float zwaartekracht;
     void Update()
     {   
         //Hier laat ik fruit in spawnen als de timer over is.//
@@ -22,15 +23,17 @@ public class FruitEnNotenInLaden : MonoBehaviour
     void SpawnRandomFruits()
     {
         chance = (Random.Range(0, 11));
+        zwaartekracht = Random.Range(0.3f, 1f);
         timerSpawn = true;
         if (chance != rareChance)
         {
-            Instantiate(FruitsAndNuts[Random.Range(0, FruitsAndNuts.Length)], new Vector2(Random.Range(-8.8f, 8.8f), 10), Quaternion.identity);
+            GameObject fruit = Instantiate(FruitsAndNuts[Random.Range(0, FruitsAndNuts.Length)], new Vector2(Random.Range(-8.8f, 8.8f), 10), Quaternion.identity);
+            fruit.GetComponent<Rigidbody2D>().gravityScale = zwaartekracht;
         }
         else
         {
-            Instantiate(RareFruitsAndNuts[Random.Range(0, FruitsAndNuts.Length)], new Vector2(Random.Range(-8.8f, 8.8f), 10), Quaternion.identity);
-
+            GameObject fruit = Instantiate(RareFruitsAndNuts[Random.Range(0, FruitsAndNuts.Length)], new Vector2(Random.Range(-8.8f, 8.8f), 10), Quaternion.identity);
+            fruit.GetComponent<Rigidbody2D>().gravityScale = zwaartekracht;
         }
         StartCoroutine(RandomSeconds());
     }

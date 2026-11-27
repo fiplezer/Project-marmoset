@@ -509,6 +509,9 @@ MonoBehaviour:
   FruitsAndNuts:
   - {fileID: 8519644107630679508, guid: 735fc1fbe720fcf468803f3e86b1125d, type: 3}
   - {fileID: 1918781965915546906, guid: a2896a4cf8117714f894c0489cdf6911, type: 3}
+  RareFruitsAndNuts:
+  - {fileID: 8151435035936743592, guid: f82b9f8ddd9db8d438273ec4ba67d7a7, type: 3}
+  - {fileID: 5558349969007299072, guid: d8400b7bea5a7c44f8dd1903f4173ef4, type: 3}
 --- !u!1 &1917028959
 GameObject:
   m_ObjectHideFlags: 0
